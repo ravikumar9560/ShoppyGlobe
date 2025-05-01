@@ -5,43 +5,46 @@ import BuyButton from "../ui/BuyButton.jsx";
 
 function ProductItem(data) {
   return (
-    <section className="bg-slate-800 w-72 min-h-[12rem] overflow-hidden text-white border rounded-lg shadow-md p-4 mx-auto hover:-translate-y-1 transition-all duration-300">
+    <section className="bg-gradient-to-br from-slate-800 to-slate-900 w-72 min-h-[20rem] overflow-hidden text-white rounded-2xl shadow-lg p-4 mx-auto hover:-translate-y-1 hover:shadow-2xl transition-transform duration-300">
       <Link to={`/product/${data?.id}`}>
-        <div className="relative pb-[90%] overflow-hidden">
+        {/* Image */}
+        <div className="relative pb-[90%] rounded-xl overflow-hidden">
           <img
             src={data.thumbnail}
             alt={data.title}
-            className="absolute inset-0 w-full h-full object-cover transform transition-transform duration-700 hover:scale-110"
+            className="absolute inset-0 w-full h-full object-cover transform transition-transform duration-500 hover:scale-110"
             loading="lazy"
           />
           {data.discountPercentage > 0 && (
-            <div className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-full text-sm font-semibold">
+            <div className="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 rounded-full text-xs font-bold shadow-sm">
               {Math.round(data.discountPercentage)}% OFF
             </div>
           )}
         </div>
-        <div className="flex justify-between">
-          <div className="">
-            <h3 className="text-sm font-semibold mb-2 h-10 ">{data?.title}</h3>
-            <div className="flex items-center mb-2">
-              <FaStar className="h-4 w-4 text-yellow-400 fill-current" />
-              <span className="ml-1 text-sm text-gray-300">{data?.rating}</span>
-              <span className="ml-2 text-sm text-gray-300">
-                ({data?.stock} in stock)
-              </span>
-            </div>
-            <h4 className="text-sm text-gray-400 font-bold mb-4">
-              {data?.category}
-            </h4>
+
+        {/* Info */}
+        <div className="mt-4 flex flex-col gap-1">
+          <h3 className="text-lg font-bold h-12 overflow-hidden">
+            {data?.title}
+          </h3>
+          <div className="flex items-center gap-2 text-sm text-yellow-400">
+            <FaStar className="h-4 w-4" />
+            <span>{data?.rating}</span>
+            <span className="text-gray-400">| {data?.stock} in stock</span>
           </div>
-          <div className="text-right">
-            <p className="text-lg font-bold mb-2">
-              ₹{Math.floor(data?.price * 80)}
-            </p>
-          </div>
+          <p className="text-gray-400 text-xs italic mt-1">{data?.category}</p>
+        </div>
+
+        {/* Price */}
+        <div className="mt-3 text-right">
+          <p className="text-xl font-extrabold text-green-400">
+            ₹{Math.floor(data?.price * 80)}
+          </p>
         </div>
       </Link>
-      <div className="flex gap-x-2">
+
+      {/* Action */}
+      <div className="mt-3">
         <BuyButton {...data} />
       </div>
     </section>

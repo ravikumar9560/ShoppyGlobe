@@ -1,24 +1,25 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import CartItem from "./CartItem";
-import { useMemo } from "react";
 
 function Cart() {
   const { cartItem } = useSelector((state) => state.cart);
+  console.log("cartItem:", cartItem);
 
-  const totalAmount = useMemo(() => {
-    return cartItem.reduce(
+  const totalAmountINR = useMemo(() => {
+    const usdTotal = cartItem.reduce(
       (total, item) => total + item.price * item.quantity,
       0
     );
+    return Math.floor(usdTotal * 80);
   }, [cartItem]);
 
   if (cartItem.length === 0) {
     return (
-      <div className="text-center py-12">
-        <h2 className="text-2xl font-bold text-gray-100 mb-4">
-          Your cart is empty
+      <div className="text-center py-16">
+        <h2 className="text-3xl font-bold text-gray-100 mb-4">
+          🛒 Your cart is empty!
         </h2>
         <Link
           to="/"
@@ -31,26 +32,28 @@ function Cart() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold text-gray-100 mb-8">
-        Shopping Cart ({cartItem?.length ? cartItem.length : "0"})
+    <div className="max-w-4xl mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold text-white mb-6">
+        Shopping Cart ({cartItem.length})
       </h1>
-      <div className="rounded-lg shadow-md overflow-hidden">
-        <div className="divide-y divide-gray-900">
+
+      <div className="rounded-lg shadow-md bg-gray-800">
+        <div className="divide-y divide-gray-700">
           {cartItem.map((item) => (
             <CartItem key={item.id} {...item} />
           ))}
         </div>
-        <div className="p-6">
-          <div className="flex justify-between items-center">
-            <span className="text-lg font-semibold text-gray-100">Total:</span>
-            <span className="text-2xl font-bold text-gray-100">
-              Total: ₹{Math.floor(totalAmount * 80)}.00
+
+        <div className="p-6 border-t border-gray-700">
+          <div className="flex justify-between items-center mb-4">
+            <span className="text-lg text-white font-semibold">Total:</span>
+            <span className="text-2xl font-bold text-green-400">
+              ₹{totalAmountINR.toLocaleString("en-IN")}
             </span>
           </div>
           <Link
             to="/checkout"
-            className="mt-6 block w-full bg-blue-500 text-white text-center px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors duration-200"
+            className="block w-full text-center bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-lg transition duration-200"
           >
             Proceed to Checkout
           </Link>

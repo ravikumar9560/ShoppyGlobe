@@ -5,6 +5,10 @@ import { Provider } from "react-redux";
 import store from "./redux/store.js";
 import "./index.css";
 
+////
+
+////
+
 import App from "./App.jsx";
 import Home from "./pages/Home.jsx";
 import Loading from "./components/Loading.jsx";
@@ -17,7 +21,7 @@ const NotFound = lazy(() => import("./components/NotFound/NotFound.jsx"));
 //   import("./components/ProductDetail/ProductDetail.jsx")
 // );
 const ProductDetail = lazy(() =>
-  import("./components/ProductDetail/ProductDetail.jsx")
+  import("./components/ProductDetail/ProductDetails.jsx")
 );
 
 const routes = createBrowserRouter([

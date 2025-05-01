@@ -8,53 +8,59 @@ import toast from "react-hot-toast";
 function CartItem({ id, thumbnail, title, quantity, price }) {
   const dispatch = useDispatch();
 
+  const handleDecrease = () => {
+    if (quantity > 1) {
+      dispatch(updateQuantity({ productId: id, quantity: quantity - 1 }));
+    } else {
+      toast.error("Minimum quantity is 1");
+    }
+  };
+
+  const handleIncrease = () => {
+    dispatch(updateQuantity({ productId: id, quantity: quantity + 1 }));
+  };
+
+  const handleRemove = () => {
+    dispatch(removeItemCart(id));
+    toast.success(`${title} removed from cart`);
+  };
+
   return (
-    <div className="p-6 flex items-center">
-      <img
-        src={thumbnail}
-        alt={title}
-        className="h-20 w-20 object-cover rounded"
-      />
-      <div className="ml-6 flex-1">
-        <h3 className="text-lg font-semibold text-gray-100">{title}</h3>
-        <p className="text-gray-200"> ₹{Math.floor(price * 75)}</p>
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 border-b border-gray-700">
+      {/* Image & Title */}
+      <div className="flex items-center gap-4 flex-1">
+        <img
+          src={thumbnail}
+          alt={title}
+          className="h-20 w-20 object-cover rounded-md"
+        />
+        <div>
+          <h3 className="text-lg font-semibold text-white">{title}</h3>
+          <p className="text-gray-300">
+            ₹{Math.floor(price * 75)} x {quantity} = ₹
+            {Math.floor(price * 75 * quantity)}
+          </p>
+        </div>
       </div>
-      <div className="flex items-center space-x-4">
+
+      {/* Quantity & Actions */}
+      <div className="flex items-center gap-4">
         <button
-          onClick={() => {
-            if (quantity > 1) {
-              dispatch(
-                updateQuantity({
-                  productId: id,
-                  quantity: quantity - 1,
-                })
-              );
-            }
-          }}
-          className="text-gray-100 hover:text-gray-400 cursor-pointer"
+          onClick={handleDecrease}
+          className="text-white hover:text-gray-400"
         >
-          <BiMinusCircle className="h-5 w-5" />
+          <BiMinusCircle className="h-6 w-6" />
         </button>
-        <span className="text-gray-100 font-medium">{quantity}</span>
+        <span className="text-white font-medium">{quantity}</span>
         <button
-          onClick={() =>
-            dispatch(
-              updateQuantity({
-                productId: id,
-                quantity: quantity + 1,
-              })
-            )
-          }
-          className="text-gray-100 hover:text-gray-400 cursor-pointer"
+          onClick={handleIncrease}
+          className="text-white hover:text-gray-400"
         >
-          <BiPlusCircle className="h-5 w-5" />
+          <BiPlusCircle className="h-6 w-6" />
         </button>
         <button
-          onClick={() => {
-            dispatch(removeItemCart(id));
-            toast.success("Product Remove");
-          }}
-          className="text-red-500 hover:text-red-700 cursor-pointer"
+          onClick={handleRemove}
+          className="text-red-500 hover:text-red-700"
         >
           <BsTrash2 className="h-5 w-5" />
         </button>

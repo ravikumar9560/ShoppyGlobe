@@ -2,36 +2,43 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../redux/fetures/cartSlice";
 import { FaCartPlus } from "react-icons/fa";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 function BuyButton(data) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const handleAddToCart = () => {
+    dispatch(addToCart(data));
+    toast.success("Added to cart!");
+  };
+
   return (
-    <>
+    <div className="flex space-x-4 mt-4">
+      {/* Add to Cart Button */}
       <button
-        onClick={() => {
-          toast.success("Add to cart");
-          dispatch(addToCart(data));
-        }}
-        className="cursor-pointer relative w-full inline-flex items-center justify-center p-4 px-6 py-3 overflow-hidden font-medium text-gray-900 transition duration-300 ease-out border-2 border-gray-300 rounded-full shadow-md group"
+        onClick={handleAddToCart}
+        className="group relative inline-flex items-center justify-center overflow-hidden rounded-full border-2 border-purple-600 px-6 py-3 font-semibold text-purple-600 transition-all duration-300 ease-out hover:bg-purple-600 hover:text-white shadow-md"
       >
-        <span className="absolute inset-0 flex items-center justify-center w-full h-full bg-gradient-to-br to-purple-600 from-blue-500 duration-300 -translate-y-full  group-hover:translate-y-0 ease">
-          <FaCartPlus color="white" size={25} />
+        <span className="absolute inset-0 flex items-center justify-center bg-purple-600 text-white duration-300 -translate-y-full group-hover:translate-y-0 ease-in-out">
+          <FaCartPlus className="mr-2" size={20} />
+          Added!
         </span>
-        <span className="absolute flex items-center justify-center w-full h-full text-gray-200 transition-all duration-300 transform group-hover:translate-y-full ease">
+        <span className="flex items-center transition-all duration-300 group-hover:translate-y-full">
+          <FaCartPlus className="mr-2" size={20} />
           Add to Cart
         </span>
       </button>
+
+      {/* Buy Now Button */}
       <button
         onClick={() => navigate("/checkout")}
-        className="px-5 py-2.5 cursor-pointer relative rounded-full group font-medium text-white inline-block bg-gradient-to-br to-purple-600 from-blue-500"
+        className="relative inline-block px-6 py-3 font-semibold text-white bg-gradient-to-r from-blue-500 to-purple-600 rounded-full hover:brightness-110 hover:shadow-lg transition-all duration-300"
       >
-        <span className="relative">Buy</span>
+        Buy Now
       </button>
-    </>
+    </div>
   );
 }
 
